@@ -21,6 +21,15 @@ export const ProjectCaseStudyPage: React.FC = () => {
   const [colB, setColB] = useState<number>(300);
   const [colH, setColH] = useState<number>(400);
 
+  // 3D Visual States for Case Study
+  const [showPunchingCone, setShowPunchingCone] = useState<boolean>(false);
+  const [stairHandrail, setStairHandrail] = useState<boolean>(true);
+  const [tankCaseType, setTankCaseType] = useState<'rectangular' | 'circular'>('rectangular');
+  const [tankCutaway, setTankCutaway] = useState<boolean>(false);
+  const [tankRoof, setTankRoof] = useState<boolean>(true);
+  const [tankPipes, setTankPipes] = useState<boolean>(true);
+  const [tankRebars, setTankRebars] = useState<boolean>(true);
+
   // Quick Column Calculation according to TCXDVN 356:2005
   const Rb = 11.5; // MPa (B20)
   const Rs = 280;  // MPa (CB300 / CII)
@@ -623,12 +632,37 @@ export const ProjectCaseStudyPage: React.FC = () => {
             {/* 3D Model Footing */}
             <div className="lg:col-span-5 space-y-4">
               <div className="bg-surface rounded-2xl border border-border p-4 shadow-sm">
-                <h3 className="font-bold text-sm text-text-main mb-2">Mô hình 3D móng đơn BTCT</h3>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="font-bold text-sm text-text-main">Mô hình 3D móng đơn BTCT</h3>
+                  <button
+                    onClick={() => setShowPunchingCone(!showPunchingCone)}
+                    className={`px-2.5 py-1 rounded-md text-xs font-semibold border transition-all ${
+                      showPunchingCone
+                        ? 'bg-amber-500 text-white border-amber-600'
+                        : 'bg-bg text-text-muted border-border hover:bg-surface'
+                    }`}
+                  >
+                    {showPunchingCone ? 'Ẩn tháp đâm thủng 45°' : '👁️ Xem tháp đâm thủng 45°'}
+                  </button>
+                </div>
                 <ViewerCanvas cameraPosition={[3.5, 2.8, 3.5]}>
-                  <Footing />
+                  {({ isXray, wireframe }) => (
+                    <Footing
+                      bMm={1800}
+                      lMm={2400}
+                      hMm={700}
+                      hStepMm={350}
+                      colBMm={300}
+                      colHMm={400}
+                      isXray={isXray}
+                      wireframe={wireframe}
+                      showPunchingCone={showPunchingCone}
+                      showLeanConcrete={true}
+                    />
+                  )}
                 </ViewerCanvas>
                 <p className="text-xs text-text-muted mt-2 text-center">
-                  Móng đơn nông: Lưới thép chịu uốn 2 phương đáy móng và thép cổ cột chờ ngàm.
+                  Móng đơn nông: Lớp bê tông lót 100mm, lưới thép đáy móng uốn móc 90°, thép chờ cổ cột bẻ chân vịt quỳ neo vào móng và đai cổ cột.
                 </p>
               </div>
             </div>
@@ -661,9 +695,29 @@ export const ProjectCaseStudyPage: React.FC = () => {
                   <p>• <strong>Lưu ý cấu tạo nút uốn [T3 tr.24]:</strong> Tại góc gãy khúc vế thang - chiếu nghỉ, cốt thép kéo bắt buộc phải uốn vắt chéo neo sâu vào vùng nén, tuyệt đối không được uốn theo mép trong vì lực kéo sẽ đẩy bật lớp bê tông bảo vệ.</p>
                 </div>
               </div>
-              <div className="mt-3">
+              <div className="flex items-center justify-between mt-2 mb-1">
+                <span className="text-xs text-text-muted">Mô hình 3D vế thang & dầm chiếu nghỉ</span>
+                <button
+                  onClick={() => setStairHandrail(!stairHandrail)}
+                  className={`px-2.5 py-1 rounded-md text-xs font-semibold border transition-all ${
+                    stairHandrail
+                      ? 'bg-primary text-white border-primary'
+                      : 'bg-bg text-text-muted border-border hover:bg-surface'
+                  }`}
+                >
+                  {stairHandrail ? 'Ẩn lan can' : 'Hiện lan can'}
+                </button>
+              </div>
+              <div className="mt-1">
                 <ViewerCanvas cameraPosition={[3.5, 2.5, 3.5]}>
-                  <Stair />
+                  {({ isXray, wireframe }) => (
+                    <Stair
+                      isXray={isXray}
+                      wireframe={wireframe}
+                      showHandrail={stairHandrail}
+                      showRebars={true}
+                    />
+                  )}
                 </ViewerCanvas>
               </div>
             </div>
@@ -689,10 +743,77 @@ export const ProjectCaseStudyPage: React.FC = () => {
                   <p>• Bề rộng vết nứt giới hạn: <InlineMath math="a_{crc} \le 0.2\text{ mm}" /> để đảm bảo khả năng giữ nước không bị thấm rỉ.</p>
                 </div>
               </div>
-              <div className="mt-3">
-                <ViewerCanvas cameraPosition={[3.5, 2.5, 3.5]}>
-                  <Tank />
+
+              <div className="space-y-2 mt-2">
+                <div className="flex flex-wrap items-center justify-between gap-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={() => setTankCaseType(tankCaseType === 'rectangular' ? 'circular' : 'rectangular')}
+                      className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-bg border border-border hover:bg-surface text-text-main shadow-xs"
+                    >
+                      {tankCaseType === 'rectangular' ? '🔁 Xem dạng Bể tròn' : '🔁 Xem dạng Bể chữ nhật'}
+                    </button>
+                    <button
+                      onClick={() => setTankCutaway(!tankCutaway)}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all ${
+                        tankCutaway
+                          ? 'bg-amber-500 text-white border-amber-600'
+                          : 'bg-bg text-text-muted border-border hover:bg-surface'
+                      }`}
+                    >
+                      {tankCutaway ? 'Đóng thành trước' : '✂️ Cắt quan sát bên trong'}
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={() => setTankRoof(!tankRoof)}
+                      className={`px-2 py-1 rounded-lg text-xs border ${
+                        !tankRoof ? 'bg-primary text-white border-primary' : 'bg-bg border-border text-text-muted hover:bg-surface'
+                      }`}
+                    >
+                      {tankRoof ? 'Mở nắp bể' : 'Đậy nắp'}
+                    </button>
+                    <button
+                      onClick={() => setTankPipes(!tankPipes)}
+                      className={`px-2 py-1 rounded-lg text-xs border ${
+                        tankPipes ? 'bg-indigo-600 text-white border-indigo-700' : 'bg-bg border-border text-text-muted hover:bg-surface'
+                      }`}
+                    >
+                      {tankPipes ? 'Đường ống: Bật' : 'Đường ống: Tắt'}
+                    </button>
+                    <button
+                      onClick={() => setTankRebars(!tankRebars)}
+                      className={`px-2 py-1 rounded-lg text-xs border ${
+                        tankRebars ? 'bg-emerald-600 text-white border-emerald-700' : 'bg-bg border-border text-text-muted hover:bg-surface'
+                      }`}
+                    >
+                      {tankRebars ? 'Lồng thép: Bật' : 'Lồng thép: Tắt'}
+                    </button>
+                  </div>
+                </div>
+
+                <ViewerCanvas cameraPosition={[3.5, 2.8, 3.5]}>
+                  {({ isXray, wireframe }) => (
+                    <Tank
+                      type={tankCaseType}
+                      lengthMm={3000}
+                      widthMm={2000}
+                      heightMm={2000}
+                      wallThickMm={120}
+                      baseThickMm={150}
+                      waterLevelPct={80}
+                      isXray={isXray}
+                      wireframe={wireframe}
+                      cutaway={tankCutaway}
+                      showRoof={tankRoof}
+                      showPipes={tankPipes}
+                      showRebars={tankRebars}
+                    />
+                  )}
                 </ViewerCanvas>
+                <p className="text-xs text-text-muted text-center">
+                  Mô hình 3D bể nước BTCT: Vát mòi 45° chân tường đáy, băng cản nước PVC, lồng thép 2 lớp thành & đáy, cổ thăm manhole và hệ thống ống cấp, tràn, xả cặn, thông hơi.
+                </p>
               </div>
             </div>
           </div>

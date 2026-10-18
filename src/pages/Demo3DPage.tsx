@@ -46,10 +46,19 @@ export const Demo3DPage: React.FC = () => {
 
   // Footing state
   const [footingType, setFootingType] = useState<'isolated' | 'strip' | 'raft'>('isolated');
+  const [showPunchingCone, setShowPunchingCone] = useState(false);
+  const [showLeanConcrete, setShowLeanConcrete] = useState(true);
+
+  // Stair state
+  const [showHandrail, setShowHandrail] = useState(true);
 
   // Tank state
-  const [tankType, setTankType] = useState<'circular' | 'rectangular'>('circular');
+  const [tankType, setTankType] = useState<'circular' | 'rectangular'>('rectangular');
   const [waterLevel, setWaterLevel] = useState(75);
+  const [tankCutaway, setTankCutaway] = useState(false);
+  const [tankRoof, setTankRoof] = useState(true);
+  const [tankPipes, setTankPipes] = useState(true);
+  const [tankRebars, setTankRebars] = useState(true);
 
   // Shell state
   const [shellType, setShellType] = useState<'dome' | 'cylindrical' | 'hypar'>('dome');
@@ -219,6 +228,8 @@ export const Demo3DPage: React.FC = () => {
                     hMm={700}
                     isXray={isXray}
                     wireframe={wireframe}
+                    showPunchingCone={showPunchingCone}
+                    showLeanConcrete={showLeanConcrete}
                   />
                 )}
 
@@ -239,17 +250,24 @@ export const Demo3DPage: React.FC = () => {
                     stepRunMm={280}
                     isXray={isXray}
                     wireframe={wireframe}
+                    showHandrail={showHandrail}
                   />
                 )}
 
                 {activeTab === 'tank' && (
                   <Tank
                     type={tankType}
-                    diameterMm={3200}
-                    heightMm={2600}
+                    diameterMm={2800}
+                    widthMm={2200}
+                    lengthMm={3000}
+                    heightMm={2200}
                     waterLevelPct={waterLevel}
                     isXray={isXray}
                     wireframe={wireframe}
+                    showRoof={tankRoof}
+                    showPipes={tankPipes}
+                    showRebars={tankRebars}
+                    cutaway={tankCutaway}
                   />
                 )}
 
@@ -514,6 +532,40 @@ export const Demo3DPage: React.FC = () => {
                   ))}
                 </div>
               </div>
+              <div className="space-y-2 pt-2 border-t border-border">
+                <label className="flex items-center gap-2 cursor-pointer text-xs">
+                  <input
+                    type="checkbox"
+                    checked={showPunchingCone}
+                    onChange={(e) => setShowPunchingCone(e.target.checked)}
+                    className="accent-primary"
+                  />
+                  <span>Tháp đâm thủng 45° (Punching Shear Cone)</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer text-xs">
+                  <input
+                    type="checkbox"
+                    checked={showLeanConcrete}
+                    onChange={(e) => setShowLeanConcrete(e.target.checked)}
+                    className="accent-primary"
+                  />
+                  <span>Lớp bê tông lót móng 100mm</span>
+                </label>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'stair' && (
+            <div className="space-y-4 text-sm">
+              <label className="flex items-center gap-2 cursor-pointer text-xs">
+                <input
+                  type="checkbox"
+                  checked={showHandrail}
+                  onChange={(e) => setShowHandrail(e.target.checked)}
+                  className="accent-primary"
+                />
+                <span>Lan can & Tay vịn inox bảo vệ</span>
+              </label>
             </div>
           )}
 
@@ -522,7 +574,7 @@ export const Demo3DPage: React.FC = () => {
               <div>
                 <label className="block font-medium text-text-muted mb-1">Loại bể:</label>
                 <div className="grid grid-cols-2 gap-2">
-                  {(['circular', 'rectangular'] as const).map((t) => (
+                  {(['rectangular', 'circular'] as const).map((t) => (
                     <button
                       key={t}
                       onClick={() => setTankType(t)}
@@ -551,6 +603,44 @@ export const Demo3DPage: React.FC = () => {
                   onChange={(e) => setWaterLevel(Number(e.target.value))}
                   className="w-full accent-primary"
                 />
+              </div>
+              <div className="space-y-2 pt-2 border-t border-border">
+                <label className="flex items-center gap-2 cursor-pointer text-xs">
+                  <input
+                    type="checkbox"
+                    checked={tankRebars}
+                    onChange={(e) => setTankRebars(e.target.checked)}
+                    className="accent-primary"
+                  />
+                  <span>Lưới thép 2 lớp thành & đáy bể</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer text-xs">
+                  <input
+                    type="checkbox"
+                    checked={tankPipes}
+                    onChange={(e) => setTankPipes(e.target.checked)}
+                    className="accent-primary"
+                  />
+                  <span>Hệ thống đường ống (cấp, tràn, xả cặn, thông hơi)</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer text-xs">
+                  <input
+                    type="checkbox"
+                    checked={tankRoof}
+                    onChange={(e) => setTankRoof(e.target.checked)}
+                    className="accent-primary"
+                  />
+                  <span>Nắp bể & Cổ thăm Manhole</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer text-xs">
+                  <input
+                    type="checkbox"
+                    checked={tankCutaway}
+                    onChange={(e) => setTankCutaway(e.target.checked)}
+                    className="accent-primary"
+                  />
+                  <span>Cắt góc quan sát bên trong (Cutaway view)</span>
+                </label>
               </div>
             </div>
           )}

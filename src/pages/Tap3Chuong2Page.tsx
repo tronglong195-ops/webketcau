@@ -13,6 +13,8 @@ import { ViewerCanvas } from '../three/common/ViewerCanvas';
 import { Tank } from '../three/elements/Tank';
 
 export const Tap3Chuong2Page: React.FC = () => {
+  const [tankShape, setTankShape] = React.useState<'circular' | 'rectangular'>('circular');
+  const [cutaway, setCutaway] = React.useState<boolean>(false);
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-12">
       {/* HEADER */}
@@ -56,17 +58,55 @@ export const Tap3Chuong2Page: React.FC = () => {
 
         {/* 3D VIEWER: WATER TANK */}
         <div className="bg-surface p-5 rounded-2xl border border-border shadow-sm space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h3 className="font-serif font-bold text-text-main text-lg">Mô hình 3D: Bể Chứa Nước Tròn</h3>
-              <p className="text-xs text-text-sub">Quan sát thành trụ tròn, đáy bể và nắp vòm nón</p>
+              <h3 className="font-serif font-bold text-text-main text-lg">
+                Mô hình 3D: {tankShape === 'circular' ? 'Bể Chứa Nước Tròn' : 'Bể Nước Chữ Nhật Toàn Khối'}
+              </h3>
+              <p className="text-xs text-text-sub">
+                Chi tiết cấu tạo: Băng cản nước PVC, vát mòi 45° chân đáy, lồng thép 2 lớp, nắp thăm manhole và hệ thống ống kỹ thuật.
+              </p>
             </div>
-            <span className="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full font-mono font-semibold">Tương tác 3D</span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setTankShape(tankShape === 'circular' ? 'rectangular' : 'circular')}
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-bg border border-border hover:bg-surface text-text-main shadow-xs"
+              >
+                {tankShape === 'circular' ? 'Chuyển sang Bể chữ nhật' : 'Chuyển sang Bể tròn'}
+              </button>
+              {tankShape === 'rectangular' && (
+                <button
+                  onClick={() => setCutaway(!cutaway)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                    cutaway
+                      ? 'bg-amber-500 text-white border-amber-600'
+                      : 'bg-bg text-text-muted border-border hover:bg-surface'
+                  }`}
+                >
+                  {cutaway ? 'Đóng thành trước' : '✂️ Cắt nhìn bên trong'}
+                </button>
+              )}
+            </div>
           </div>
           <div className="h-96 w-full rounded-xl overflow-hidden border border-border bg-slate-900/40">
-            <ViewerCanvas cameraPosition={[2.4, 2.0, 2.4]}>
+            <ViewerCanvas cameraPosition={[2.8, 2.2, 2.8]}>
               {({ isXray, wireframe }) => (
-                <Tank radiusMm={1500} heightMm={2200} wallThicknessMm={150} isXray={isXray} wireframe={wireframe} />
+                <Tank
+                  type={tankShape}
+                  radiusMm={1400}
+                  widthMm={2200}
+                  lengthMm={3000}
+                  heightMm={2200}
+                  wallThicknessMm={150}
+                  baseThickMm={200}
+                  waterLevelPct={80}
+                  isXray={isXray}
+                  wireframe={wireframe}
+                  cutaway={cutaway}
+                  showRoof={true}
+                  showPipes={true}
+                  showRebars={true}
+                />
               )}
             </ViewerCanvas>
           </div>

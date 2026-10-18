@@ -54,3 +54,58 @@ export function getSteelMaterial(type: 'tension' | 'compression' | 'stirrup' | '
     roughness: 0.35
   });
 }
+
+export function getWaterMaterial(opacity: number = 0.45) {
+  return new THREE.MeshPhysicalMaterial({
+    color: new THREE.Color('#0EA5E9'),
+    transparent: true,
+    opacity,
+    roughness: 0.1,
+    metalness: 0.1,
+    transmission: 0.6,
+    ior: 1.333,
+    depthWrite: false
+  });
+}
+
+export function getPipeMaterial(type: 'steel' | 'pvc' = 'steel') {
+  if (type === 'pvc') {
+    return new THREE.MeshStandardMaterial({
+      color: new THREE.Color('#38BDF8'),
+      roughness: 0.3,
+      metalness: 0.1
+    });
+  }
+  return new THREE.MeshStandardMaterial({
+    color: new THREE.Color('#94A3B8'),
+    metalness: 0.85,
+    roughness: 0.25
+  });
+}
+
+export function getWaterstopMaterial() {
+  return new THREE.MeshStandardMaterial({
+    color: new THREE.Color('#EAB308'), // Bright yellow PVC waterstop
+    roughness: 0.5,
+    metalness: 0.1,
+    side: THREE.DoubleSide
+  });
+}
+
+export function getLeanConcreteMaterial() {
+  return new THREE.MeshStandardMaterial({
+    color: new THREE.Color('#94A3B8'), // Gray lean concrete
+    roughness: 0.95,
+    metalness: 0.05
+  });
+}
+
+export function getPunchingConeMaterial() {
+  return new THREE.MeshStandardMaterial({
+    color: new THREE.Color('#F97316'), // Translucent orange shear cone
+    transparent: true,
+    opacity: 0.35,
+    side: THREE.DoubleSide,
+    depthWrite: false
+  });
+}
