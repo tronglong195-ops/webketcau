@@ -224,6 +224,18 @@ export const Navbar: React.FC = () => {
           <div className="h-4 w-px bg-border mx-1" />
 
           <Link
+            to="/du-an-thuc-te"
+            className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 ${
+              location.pathname === '/du-an-thuc-te'
+                ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 font-semibold border border-amber-500/30'
+                : 'text-text-muted hover:text-text-main hover:bg-bg'
+            }`}
+          >
+            <span>🏗️</span>
+            <span>Dự án mẫu</span>
+          </Link>
+
+          <Link
             to="/demo-3d"
             className={`px-3 py-1.5 rounded-lg transition-colors ${
               location.pathname === '/demo-3d'
@@ -382,7 +394,16 @@ export const Navbar: React.FC = () => {
             )}
           </div>
 
-          <div className="grid grid-cols-3 gap-2 pt-2 border-t border-border text-xs">
+          <Link
+            to="/du-an-thuc-te"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-400 font-semibold text-xs border border-amber-500/30"
+          >
+            <span>🏗️</span>
+            <span>Dự án mẫu thực tế (Tổng hợp 3 tập)</span>
+          </Link>
+
+          <div className="grid grid-cols-3 gap-2 pt-1 border-t border-border text-xs">
             <Link
               to="/demo-3d"
               onClick={() => setMobileMenuOpen(false)}

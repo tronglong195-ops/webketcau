@@ -32,6 +32,7 @@ import { FormulaCheatSheetPage } from './pages/FormulaCheatSheetPage';
 import { SymbolReferencePage } from './pages/SymbolReferencePage';
 import { MaterialAppendixPage } from './pages/MaterialAppendixPage';
 import { QuickSearchPage } from './pages/QuickSearchPage';
+import { ProjectCaseStudyPage } from './pages/ProjectCaseStudyPage';
 
 export const App: React.FC = () => {
   return (
@@ -68,6 +69,7 @@ export const App: React.FC = () => {
           <Route path="/tap-3/chuong-6" element={<Tap3Chuong6Page />} />
           <Route path="/tap-3/phu-luc" element={<Tap3PhuLucPage />} />
           {/* Tiện ích tra cứu */}
+          <Route path="/du-an-thuc-te" element={<ProjectCaseStudyPage />} />
           <Route path="/demo-3d" element={<Demo3DPage />} />
           <Route path="/cong-thuc" element={<FormulaCheatSheetPage />} />
           <Route path="/ky-hieu" element={<SymbolReferencePage />} />

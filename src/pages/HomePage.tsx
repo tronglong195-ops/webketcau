@@ -131,6 +131,29 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
+      {/* Featured Case Study Banner */}
+      <section className="max-w-6xl mx-auto px-4">
+        <div className="bg-gradient-to-r from-amber-600 via-amber-700 to-indigo-900 rounded-3xl p-6 sm:p-8 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="space-y-2 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-xs font-semibold backdrop-blur-md">
+              <span>🏗️ BÀI TẬP & DỰ ÁN MẪU THỰC TẾ</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-serif font-bold">
+              Thiết Kế Kết Cấu Tòa Nhà Văn Phòng 5 Tầng Toàn Diện
+            </h3>
+            <p className="text-white/80 text-xs sm:text-sm leading-relaxed">
+              Bài tập nghiên cứu tổng hợp toàn bộ 3 tập sách Võ Bá Tầm: Tính toán liên hoàn từ Bản sàn, Dầm phụ, Dầm chính, Cột nén lệch tâm, Móng đơn, đến Cầu thang & Bể nước mái kèm mô hình 3D tương tác.
+            </p>
+          </div>
+          <Link
+            to="/du-an-thuc-te"
+            className="px-6 py-3 bg-white text-stone-900 font-bold rounded-2xl shadow-md hover:bg-stone-100 transition-all text-sm whitespace-nowrap"
+          >
+            Khám phá Dự án ngay &rarr;
+          </Link>
+        </div>
+      </section>
+
       {/* 3 Volumes Roadmap with Full Chapter Lists */}
       <section className="max-w-6xl mx-auto px-4 space-y-8">
         <div className="text-center max-w-2xl mx-auto space-y-2">
